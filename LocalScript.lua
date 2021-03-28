@@ -70,7 +70,7 @@ local function IndexProperties(x, opened)
 				x:Destroy()
 			end)
 		end
-		
+
 		newButton(x.Name, frame, Color3.fromRGB(34, 34, 34), function(btn2)
 			-- Properties
 
@@ -100,24 +100,26 @@ local function IndexChild(parent)
 		newButton("Back To Game", frame, Color3.fromRGB(24, 24, 24), function()
 			ClearList()
 			for _,v in pairs(game:GetChildren()) do
-				newButton(v.Name, frame, Color3.fromRGB(34, 34, 34), function(btn)
-					if v then
-						MouseTarget()
-						if parent then
-							IndexChild(parent.Parent:FindFirstChild(btn.Text))
-						else
-							ClearList()
+				pcall(function()
+					newButton(v.Name, frame, Color3.fromRGB(34, 34, 34), function(btn)
+						if v then
 							MouseTarget()
-							newLabel("Explorer refreshed!", frame, Color3.fromRGB(2, 183, 87))
-							for _,x in pairs(game:GetChildren()) do
-								newButton(x.Name, frame, Color3.fromRGB(34, 34, 34), function(btn2)
-									IndexChild(game:FindFirstChild(x.Name))
-								end)
+							if parent then
+								IndexChild(parent.Parent:FindFirstChild(btn.Text))
+							else
+								ClearList()
+								MouseTarget()
+								newLabel("Explorer refreshed!", frame, Color3.fromRGB(2, 183, 87))
+								for _,x in pairs(game:GetChildren()) do
+									newButton(x.Name, frame, Color3.fromRGB(34, 34, 34), function(btn2)
+										IndexChild(game:FindFirstChild(x.Name))
+									end)
+								end
 							end
+						else
+							print("Part was deleted or is missing.")
 						end
-					else
-						print("Part was deleted or is missing.")
-					end
+					end)
 				end)
 			end
 		end)
@@ -132,7 +134,7 @@ local function IndexChild(parent)
 					for _,x in pairs(parent:FindFirstChild(btn.Text):GetChildren()) do
 						newButton(x.Name, frame, Color3.fromRGB(34, 34, 34), function(btn2)
 							IndexChild(parent:FindFirstChild(btn2.Text))
-							
+
 							IndexProperties(x, false)
 						end)
 					end
@@ -143,11 +145,13 @@ local function IndexChild(parent)
 end
 
 local function IndexParent(parent)
-	for _,v in pairs(parent:GetChildren()) do
-		newButton(v.Name, frame, Color3.fromRGB(34, 34, 34), function(btn)
-			IndexChild(parent:FindFirstChild(btn.Text))
-		end)
-	end
+	pcall(function()
+		for _,v in pairs(parent:GetChildren()) do
+			newButton(v.Name, frame, Color3.fromRGB(34, 34, 34), function(btn)
+				IndexChild(parent:FindFirstChild(btn.Text))
+			end)
+		end
+	end)
 end
 
 local function PartName()
@@ -156,16 +160,14 @@ local function PartName()
 			if Mouse.Target then				
 				if Mouse.Target.Parent then
 					ClearList()
-					
+
 					newButton("Back To Game", frame, Color3.fromRGB(24, 24, 24), function()
 						ClearList()
 						for _,v in pairs(game:GetChildren()) do
-							newButton(v.Name, frame, Color3.fromRGB(34, 34, 34), function(btn)
-								if v then
-									MouseTarget()
-									if parent then
-										IndexChild(parent.Parent:FindFirstChild(btn.Text))
-									else
+							pcall(function()
+								newButton(v.Name, frame, Color3.fromRGB(34, 34, 34), function(btn)
+									if v then
+										MouseTarget()
 										ClearList()
 										MouseTarget()
 										newLabel("Explorer refreshed!", frame, Color3.fromRGB(2, 183, 87))
@@ -174,14 +176,14 @@ local function PartName()
 												IndexChild(game:FindFirstChild(x.Name))
 											end)
 										end
+									else
+										print("Part was deleted or is missing.")
 									end
-								else
-									print("Part was deleted or is missing.")
-								end
+								end)
 							end)
 						end
 					end)
-					
+
 					IndexProperties(Mouse.Target)
 				end
 			end
