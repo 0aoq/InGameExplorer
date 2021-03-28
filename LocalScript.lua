@@ -35,6 +35,8 @@ end
 -- // Gui Outline
 
 local ScreenGui = Instance.new("ScreenGui", Player.PlayerGui)
+ScreenGui.Name = "ExplorerGuiMain"
+
 local frame = Instance.new("ScrollingFrame", ScreenGui)
 
 frame.BackgroundColor3 = Color3.fromRGB(24, 24, 24)
@@ -66,12 +68,13 @@ local function IndexProperties(x, opened)
 	if #x.Parent:GetChildren() >= 1 then
 		if opened then
 			newLabel("Opened: " .. x.Name, frame, Color3.fromRGB(24, 24, 24))
-			newButton("Delete: " .. x.Name, frame, Color3.fromRGB(24, 24, 24), function()
+			newButton("Delete: " .. x.Name, frame, Color3.fromRGB(24, 24, 24), function(btn)
 				x:Destroy()
+				btn:Destroy()
 			end)
 		end
 
-		newButton(x.Name, frame, Color3.fromRGB(34, 34, 34), function(btn2)
+		newButton(x.Name .. " Properties", frame, Color3.fromRGB(28, 28, 28), function(btn2)
 			-- Properties
 
 			newButton("Delete: " .. x.Name, frame, Color3.fromRGB(24, 24, 24), function()
@@ -87,6 +90,10 @@ local function IndexProperties(x, opened)
 				newButton("Anchored: " .. tostring(x.Anchored), frame, Color3.fromRGB(24, 24, 24), function(btn)
 					x.Anchored = not x.Anchored 
 					btn.Text = "Anchored: " .. tostring(x.Anchored)
+				end)
+			elseif x:IsA("Tool") then
+				newButton("Give To Self", frame, Color3.fromRGB(24, 24, 24), function(btn)
+					x:Clone().Parent = Player.Backpack
 				end)
 			end
 		end)
@@ -138,6 +145,7 @@ local function IndexChild(parent)
 							IndexProperties(x, false)
 						end)
 					end
+					IndexProperties(v, false)
 				end
 			end)
 		end
@@ -154,13 +162,14 @@ local function IndexParent(parent)
 	end)
 end
 
-local function PartName()
+local function Search()
 	Mouse.Move:Connect(function()
 		if trackMouseTarget then
 			if Mouse.Target then				
 				if Mouse.Target.Parent then
 					ClearList()
-
+					MouseTarget()
+					
 					newButton("Back To Game", frame, Color3.fromRGB(24, 24, 24), function()
 						ClearList()
 						for _,v in pairs(game:GetChildren()) do
@@ -197,7 +206,7 @@ pcall(function()
 	IndexParent(game)
 end)
 
-PartName()
+Search()
 
 -- // Drag
 
