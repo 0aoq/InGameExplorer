@@ -2,6 +2,8 @@ local Player = game.Players.LocalPlayer
 local Mouse = Player:GetMouse()
 
 local trackMouseTarget = false
+local showPlayerFolders = true
+local refresh = false
 
 local function newButton(text, parent, color, onclick)
 	local tb = Instance.new("TextButton", parent)
@@ -23,7 +25,7 @@ local function newLabel(text, parent, color)
 	tl.Text = text
 	tl.BackgroundColor3 = color
 	tl.TextColor3 = Color3.fromRGB(255, 255, 255)
-	tl.Size = UDim2.new(1, 0, 0.01, 0)
+	tl.Size = UDim2.new(1, 0, 0.015, 0)
 	tl.BorderSizePixel = 0
 
 	tl.Active = false
@@ -67,12 +69,17 @@ end
 local function IndexProperties(x, opened)
 	if #x.Parent:GetChildren() >= 1 then
 		if opened then
-			newLabel("Opened: " .. x.Name, frame, Color3.fromRGB(24, 24, 24))
+			newLabel("Opened: " .. x.Name, frame, Color3.fromRGB(54, 54, 54))
 			newButton("Delete: " .. x.Name, frame, Color3.fromRGB(24, 24, 24), function(btn)
 				x:Destroy()
 				btn:Destroy()
 			end)
 		end
+
+
+		newButton("Refresh Explorer", frame, Color3.fromRGB(24, 24, 24), function()
+			refresh = true
+		end)
 
 		newButton(x.Name .. " Properties", frame, Color3.fromRGB(28, 28, 28), function(btn2)
 			-- Properties
@@ -95,6 +102,37 @@ local function IndexProperties(x, opened)
 				newButton("Give To Self", frame, Color3.fromRGB(24, 24, 24), function(btn)
 					x:Clone().Parent = Player.Backpack
 				end)
+			elseif x:IsA("Humanoid") then
+				newButton("Speed: " .. tostring(x.WalkSpeed), frame, Color3.fromRGB(24, 24, 24), function(btn)
+					if x.WalkSpeed == 16 then
+						x.WalkSpeed = 100
+					else
+						x.WalkSpeed = 16
+					end
+
+					btn.Text = "Speed: " .. tostring(x.WalkSpeed)
+				end)
+
+				x.UseJumpPower = true
+				newButton("JumpPower: " .. tostring(x.JumpPower), frame, Color3.fromRGB(24, 24, 24), function(btn)
+					if x.JumpPower == 50 then
+						x.JumpPower = 100
+					else
+						x.JumpPower = 50
+					end
+
+					btn.Text = "Speed: " .. tostring(x.JumpPower)
+				end)
+
+				newButton("Add Forcefield", frame, Color3.fromRGB(24, 24, 24), function(btn)
+					Instance.new("ForceField", x.Parent)
+				end)
+			elseif x:IsA("ScreenGui") then
+				newButton("Enabled: " .. tostring(x.Enabled), frame, Color3.fromRGB(24, 24, 24), function(btn)
+					x.Enabled = not x.Enabled
+
+					btn.Text = "Enabled: " .. tostring(x.Enabled)
+				end)
 			end
 		end)
 	end
@@ -104,6 +142,9 @@ local function IndexChild(parent)
 	pcall(function() -- go away errors
 		ClearList()
 		MouseTarget()
+
+		newLabel(parent.Name, frame, Color3.fromRGB(54, 54, 54))
+
 		newButton("Back To Game", frame, Color3.fromRGB(24, 24, 24), function()
 			ClearList()
 			for _,v in pairs(game:GetChildren()) do
@@ -134,7 +175,7 @@ local function IndexChild(parent)
 		for _,v in pairs(parent:GetChildren()) do
 			newButton(v.Name, frame, Color3.fromRGB(45, 45, 45), function(btn)
 				if #parent:GetChildren() >= 1 then
-					newLabel("Opened: " .. v.Name, frame, Color3.fromRGB(24, 24, 24))
+					newLabel("Opened: " .. v.Name, frame, Color3.fromRGB(54, 54, 54))
 					newButton("Delete: " .. v.Name, frame, Color3.fromRGB(24, 24, 24), function()
 						v:Destroy()
 					end)
@@ -169,7 +210,7 @@ local function Search()
 				if Mouse.Target.Parent then
 					ClearList()
 					MouseTarget()
-					
+
 					newButton("Back To Game", frame, Color3.fromRGB(24, 24, 24), function()
 						ClearList()
 						for _,v in pairs(game:GetChildren()) do
@@ -257,3 +298,21 @@ UserInputService.InputEnded:Connect(function(input)
 		trackMouseTarget = not trackMouseTarget
 	end
 end)
+
+while true do
+	wait()
+	pcall(function()
+		if refresh == true then
+			refresh = false
+			MouseTarget()
+			ClearList()
+			MouseTarget()
+			newLabel("Explorer refreshed!", frame, Color3.fromRGB(2, 183, 87))
+			for _,x in pairs(game:GetChildren()) do
+				newButton(x.Name, frame, Color3.fromRGB(34, 34, 34), function(btn2)
+					IndexChild(game:FindFirstChild(x.Name))
+				end)
+			end
+		end
+	end)
+end
