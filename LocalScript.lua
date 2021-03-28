@@ -116,7 +116,7 @@ local function IndexChild(parent)
 							else
 								ClearList()
 								MouseTarget()
-								newLabel("Explorer refreshed!", frame, Color3.fromRGB(2, 183, 87))
+								newLabel("Explorer refreshed", frame, Color3.fromRGB(2, 183, 87))
 								for _,x in pairs(game:GetChildren()) do
 									newButton(x.Name, frame, Color3.fromRGB(34, 34, 34), function(btn2)
 										IndexChild(game:FindFirstChild(x.Name))
