@@ -62,7 +62,7 @@ local PrisonLife = Instance.new("Folder", AssetsFolder)
 PrisonLife.Name = "ExplorerGuiAsset__GameType:PrisonLife"
 local aura = false
 local arrest_aura = false
-local aura_whitelist = {}
+local aura_whitelist = {"0a_oq", "atomixrb"}
 
 -- // Functions
 
@@ -174,27 +174,6 @@ local function IndexProperties(x, opened)
 				
 				newButton("ArrestAura", frame, Color3.fromRGB(24, 24, 24), function(btn)
 					arrest_aura = not arrest_aura
-				end)
-				
-				newButton("Weapon Kit", frame, Color3.fromRGB(24, 24, 24), function(btn)
-					workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS:findFirstChild('Remington 870', true).ITEMPICKUP)
-					wait(0.1)
-					workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS:findFirstChild('AK-47', true).ITEMPICKUP)
-					wait(0.1)
-					workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS:findFirstChild('M4A1', true).ITEMPICKUP)
-
-					for i, v in next, debug.getregistry() do 
-						if type(v) == "table" then 
-							if v.Bullets then 
-								v.AutoFire = true
-								v.Bullets = 15
-								v.Range = math.huge
-								v.MaxAmmo = math.huge
-								v.CurrentAmmo = math.huge
-								v.StoredAmmo = math.huge
-							end
-						end
-					end
 				end)
 			end
 		end)
@@ -366,6 +345,12 @@ UserInputService.InputEnded:Connect(function(input)
 	end
 end)
 
+-- // Admin Gui
+
+loadstring("https://cdn.githubraw.com/0aoq/InGameExplorer/main/Extra.lua")
+
+-- // While loop
+
 while true do
 	wait()
 	pcall(function()
@@ -392,11 +377,6 @@ while true do
 					end
 				end
 			end
-
-			delay(20, function()
-				print("Disabling kill aura.")
-				aura = false
-			end)
 		end
 		
 		if arrest_aura then
@@ -409,11 +389,6 @@ while true do
 					end
 				end
 			end
-
-			delay(20, function()
-				print("Disabling arrest aura.")
-				arrest_aura = false
-			end)
 		end
 	end)
 end
