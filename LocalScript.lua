@@ -38,6 +38,9 @@ end
 
 local ScreenGui = Instance.new("ScreenGui", Player.PlayerGui)
 ScreenGui.Name = "ExplorerGuiMain"
+ScreenGui.Enabled = false
+
+print("Hello! Press X to toggle the gui, and Z to toggle part select on hover.")
 
 local frame = Instance.new("ScrollingFrame", ScreenGui)
 
@@ -48,6 +51,14 @@ frame.BorderSizePixel = 0
 
 local list = Instance.new("UIListLayout", frame)
 list.Padding = UDim.new(0.001, 0)
+
+-- // Assets
+
+local AssetsFolder = Instance.new("Folder", workspace)
+AssetsFolder.Name = "ExplorerGuiAsstes"
+
+local PrisonLife = Instance.new("Folder", AssetsFolder)
+PrisonLife.Name = "ExplorerGuiAsset__GameType:PrisonLife"
 
 -- // Functions
 
@@ -69,7 +80,7 @@ end
 local function IndexProperties(x, opened)
 	if #x.Parent:GetChildren() >= 1 then
 		if opened then
-			newLabel("Opened: " .. x.Name, frame, Color3.fromRGB(54, 54, 54))
+			newLabel("Opened: " .. x.ClassName .. " " .. x.Name, frame, Color3.fromRGB(54, 54, 54))
 			newButton("Delete: " .. x.Name, frame, Color3.fromRGB(24, 24, 24), function(btn)
 				x:Destroy()
 				btn:Destroy()
@@ -126,6 +137,9 @@ local function IndexProperties(x, opened)
 
 				newButton("Add Forcefield", frame, Color3.fromRGB(24, 24, 24), function(btn)
 					Instance.new("ForceField", x.Parent)
+					
+					x.Health = 1000
+					x.MaxHealth = 1000
 				end)
 			elseif x:IsA("ScreenGui") then
 				newButton("Enabled: " .. tostring(x.Enabled), frame, Color3.fromRGB(24, 24, 24), function(btn)
@@ -142,6 +156,15 @@ local function IndexProperties(x, opened)
 					x.Disabled = not x.Disabled
 
 					btn.Text = "Disabled: " .. tostring(x.Disabled)
+				end)
+			elseif x.Name == "ExplorerGuiAsset__GameType:PrisonLife" then
+				newButton("Aura", frame, Color3.fromRGB(24, 24, 24), function(btn)
+					for _,v in pairs(game:GetService("Players"):GetPlayers()) do
+						local dist = (Player.Character.HumanoidRootPart.Position - v.Character.HumanoidRootPart.Position).Magnitude
+						if dist < 32 and v.Name ~= Player.Name then
+							game.ReplicatedStorage.meleeEvent:FireServer(v)
+						end
+					end
 				end)
 			end
 		end)
@@ -185,8 +208,8 @@ local function IndexChild(parent)
 		for _,v in pairs(parent:GetChildren()) do
 			newButton(v.Name, frame, Color3.fromRGB(45, 45, 45), function(btn)
 				if #parent:GetChildren() >= 1 then
-					newLabel("Opened: " .. v.Name, frame, Color3.fromRGB(54, 54, 54))
-					newButton("Delete: " .. v.Name, frame, Color3.fromRGB(24, 24, 24), function()
+					newLabel("Opened: " .. v.ClassName .. " " .. v.Name, frame, Color3.fromRGB(54, 54, 54))
+					newButton("Delete: " .. v.ClassName .. " " .. v.Name, frame, Color3.fromRGB(24, 24, 24), function()
 						v:Destroy()
 					end)
 					for _,x in pairs(parent:FindFirstChild(btn.Text):GetChildren()) do
@@ -306,6 +329,8 @@ end)
 UserInputService.InputEnded:Connect(function(input)
 	if input.KeyCode == Enum.KeyCode.Z then
 		trackMouseTarget = not trackMouseTarget
+	elseif input.KeyCode == Enum.KeyCode.X then
+		ScreenGui.Enabled = not ScreenGui.Enabled
 	end
 end)
 
