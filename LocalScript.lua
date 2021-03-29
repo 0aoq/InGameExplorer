@@ -36,7 +36,7 @@ end
 
 -- // Gui Outline
 
-local ScreenGui = Instance.new("ScreenGui", Player.PlayerGui)
+local ScreenGui = Instance.new("ScreenGui", game.CoreGui)
 ScreenGui.Name = "ExplorerGuiMain"
 ScreenGui.Enabled = false
 
@@ -61,6 +61,8 @@ AssetsFolder.Name = "ExplorerGuiAsstes"
 local PrisonLife = Instance.new("Folder", AssetsFolder)
 PrisonLife.Name = "ExplorerGuiAsset__GameType:PrisonLife"
 local aura = false
+local arrest_aura = false
+local aura_whitelist = {}
 
 -- // Functions
 
@@ -139,9 +141,15 @@ local function IndexProperties(x, opened)
 
 				newButton("Add Forcefield", frame, Color3.fromRGB(24, 24, 24), function(btn)
 					Instance.new("ForceField", x.Parent)
-					
+
 					x.Health = 1000
 					x.MaxHealth = 1000
+				end)
+				
+				newLabel("Prison Life")
+				
+				newButton("Add To Aura Whitelist", frame, Color3.fromRGB(24, 24, 24), function(btn)
+					table.insert(aura_whitelist, x.Parent.Name)
 				end)
 			elseif x:IsA("ScreenGui") then
 				newButton("Enabled: " .. tostring(x.Enabled), frame, Color3.fromRGB(24, 24, 24), function(btn)
@@ -164,16 +172,22 @@ local function IndexProperties(x, opened)
 					aura = not aura
 				end)
 				
+				newButton("ArrestAura", frame, Color3.fromRGB(24, 24, 24), function(btn)
+					arrest_aura = not arrest_aura
+				end)
+				
 				newButton("Weapon Kit", frame, Color3.fromRGB(24, 24, 24), function(btn)
 					workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS:findFirstChild('Remington 870', true).ITEMPICKUP)
 					wait(0.1)
 					workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS:findFirstChild('AK-47', true).ITEMPICKUP)
-					
+					wait(0.1)
+					workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS:findFirstChild('M4A1', true).ITEMPICKUP)
+
 					for i, v in next, debug.getregistry() do 
 						if type(v) == "table" then 
 							if v.Bullets then 
 								v.AutoFire = true
-								v.Bullets = 20
+								v.Bullets = 15
 								v.Range = math.huge
 								v.MaxAmmo = math.huge
 								v.CurrentAmmo = math.huge
@@ -367,19 +381,38 @@ while true do
 				end)
 			end
 		end
-		
+
 		if aura then
 			for i, plr in pairs(game.Players:GetChildren()) do
-				if plr.Name ~= game.Players.LocalPlayer.Name then
-					for i = 1, 10 do
-						game.ReplicatedStorage.meleeEvent:FireServer(plr)
+				for key, value in pairs(aura_whitelist) do
+					if plr.Name ~= game.Players.LocalPlayer.Name and plr.Name ~= value then
+						for i = 1, 10 do
+							game.ReplicatedStorage.meleeEvent:FireServer(plr)
+						end
 					end
 				end
 			end
-			
+
 			delay(20, function()
 				print("Disabling kill aura.")
 				aura = false
+			end)
+		end
+		
+		if arrest_aura then
+			for i, plr in pairs(game.Players:GetChildren()) do
+				for key, value in pairs(aura_whitelist) do
+					if plr.Name ~= game.Players.LocalPlayer.Name and plr.Name ~= value then
+						for i = 1, 10 do
+							game.ReplicatedStorage.Arrest:InvokeServer(plr.Character.HumanoidRootPart)
+						end
+					end
+				end
+			end
+
+			delay(20, function()
+				print("Disabling arrest aura.")
+				arrest_aura = false
 			end)
 		end
 	end)
