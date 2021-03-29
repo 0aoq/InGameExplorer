@@ -60,6 +60,7 @@ AssetsFolder.Name = "ExplorerGuiAsstes"
 
 local PrisonLife = Instance.new("Folder", AssetsFolder)
 PrisonLife.Name = "ExplorerGuiAsset__GameType:PrisonLife"
+local aura = false
 
 -- // Functions
 
@@ -160,10 +161,24 @@ local function IndexProperties(x, opened)
 				end)
 			elseif x.Name == "ExplorerGuiAsset__GameType:PrisonLife" then
 				newButton("Aura", frame, Color3.fromRGB(24, 24, 24), function(btn)
-					for _,v in pairs(game:GetService("Players"):GetPlayers()) do
-						local dist = (Player.Character.HumanoidRootPart.Position - v.Character.HumanoidRootPart.Position).Magnitude
-						if dist < 32 and v.Name ~= Player.Name then
-							game.ReplicatedStorage.meleeEvent:FireServer(v)
+					aura = not aura
+				end)
+				
+				newButton("Weapon Kit", frame, Color3.fromRGB(24, 24, 24), function(btn)
+					workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS:findFirstChild('Remington 870', true).ITEMPICKUP)
+					wait(0.1)
+					workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS:findFirstChild('AK-47', true).ITEMPICKUP)
+					
+					for i, v in next, debug.getregistry() do 
+						if type(v) == "table" then 
+							if v.Bullets then 
+								v.AutoFire = true
+								v.Bullets = 20
+								v.Range = math.huge
+								v.MaxAmmo = math.huge
+								v.CurrentAmmo = math.huge
+								v.StoredAmmo = math.huge
+							end
 						end
 					end
 				end)
@@ -301,15 +316,17 @@ end
 
 UserInputService.InputBegan:Connect(function(input)
 	if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-		dragging = true
-		dragStart = input.Position
-		startPos = gui.Position
+		if ScreenGui.Enabled == true then
+			dragging = true
+			dragStart = input.Position
+			startPos = gui.Position
 
-		input.Changed:Connect(function()
-			if input.UserInputState == Enum.UserInputState.End then
-				dragging = false
-			end
-		end)
+			input.Changed:Connect(function()
+				if input.UserInputState == Enum.UserInputState.End then
+					dragging = false
+				end
+			end)
+		end
 	end
 end)
 
@@ -349,6 +366,21 @@ while true do
 					IndexChild(game:FindFirstChild(x.Name))
 				end)
 			end
+		end
+		
+		if aura then
+			for i, plr in pairs(game.Players:GetChildren()) do
+				if plr.Name ~= game.Players.LocalPlayer.Name then
+					for i = 1, 10 do
+						game.ReplicatedStorage.meleeEvent:FireServer(plr)
+					end
+				end
+			end
+			
+			delay(20, function()
+				print("Disabling kill aura.")
+				aura = false
+			end)
 		end
 	end)
 end
