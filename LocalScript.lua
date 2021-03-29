@@ -133,6 +133,16 @@ local function IndexProperties(x, opened)
 
 					btn.Text = "Enabled: " .. tostring(x.Enabled)
 				end)
+			elseif x:IsA("Team") then
+				newButton("Switch To", frame, Color3.fromRGB(24, 24, 24), function(btn)
+					Player.Team = x
+				end)
+			elseif x:IsA("Script") or x:IsA("LocalScript") then
+				newButton("Disabled: " .. tostring(x.Disabled), frame, Color3.fromRGB(24, 24, 24), function(btn)
+					x.Disabled = not x.Disabled
+
+					btn.Text = "Disabled: " .. tostring(x.Disabled)
+				end)
 			end
 		end)
 	end
