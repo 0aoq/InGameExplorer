@@ -10,7 +10,7 @@ local function newButton(text, parent, color, onclick)
 	tb.Text = text
 	tb.BackgroundColor3 = color
 	tb.TextColor3 = Color3.fromRGB(255, 255, 255)
-	tb.Size = UDim2.new(1, 0, 0.01, 0)
+	tb.Size = UDim2.new(1, 0, 0.003, 0)
 	tb.BorderSizePixel = 0
 
 	tb.MouseButton1Click:Connect(function()
@@ -25,7 +25,7 @@ local function newLabel(text, parent, color)
 	tl.Text = text
 	tl.BackgroundColor3 = color
 	tl.TextColor3 = Color3.fromRGB(255, 255, 255)
-	tl.Size = UDim2.new(1, 0, 0.015, 0)
+	tl.Size = UDim2.new(1, 0, 0.0045, 0)
 	tl.BorderSizePixel = 0
 
 	tl.Active = false
@@ -48,9 +48,10 @@ frame.BackgroundColor3 = Color3.fromRGB(24, 24, 24)
 frame.Size = UDim2.new(0.191, 0, 0.505, 0)
 frame.Position = UDim2.new(0.399, 0, 0.247, 0)
 frame.BorderSizePixel = 0
+frame.CanvasSize = UDim2.new(0, 0, 10, 0)
 
 local list = Instance.new("UIListLayout", frame)
-list.Padding = UDim.new(0.001, 0)
+list.Padding = UDim.new(0.0005, 0)
 
 -- // Assets
 
