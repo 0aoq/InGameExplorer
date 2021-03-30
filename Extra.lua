@@ -235,7 +235,7 @@ UICorner_8.Parent = TextButton_6
 
 -- Scripts:
 
-local function LCNHLUB_fake_script() -- TextButton.Expand 
+local function QPJJAP_fake_script() -- TextButton.Expand 
 	local script = Instance.new('LocalScript', TextButton)
 
 	local DefaultColor = script.Parent.BackgroundColor3
@@ -337,8 +337,8 @@ local function LCNHLUB_fake_script() -- TextButton.Expand
 		end)
 	end)
 end
-coroutine.wrap(LCNHLUB_fake_script)()
-local function IVZH_fake_script() -- TextButton_2.Expand 
+coroutine.wrap(QPJJAP_fake_script)()
+local function YUNLNNO_fake_script() -- TextButton_2.Expand 
 	local script = Instance.new('LocalScript', TextButton_2)
 
 	local DefaultColor = script.Parent.BackgroundColor3
@@ -358,8 +358,8 @@ local function IVZH_fake_script() -- TextButton_2.Expand
 		script.Parent.Parent.Parent.Parent.TextButton.Visible = true
 	end)
 end
-coroutine.wrap(IVZH_fake_script)()
-local function OMQCAZ_fake_script() -- TextButton_3.Expand 
+coroutine.wrap(YUNLNNO_fake_script)()
+local function FVZSYDR_fake_script() -- TextButton_3.Expand 
 	local script = Instance.new('LocalScript', TextButton_3)
 
 	local DefaultColor = script.Parent.BackgroundColor3
@@ -384,8 +384,8 @@ local function OMQCAZ_fake_script() -- TextButton_3.Expand
 		modWeapons = true
 	end)
 end
-coroutine.wrap(OMQCAZ_fake_script)()
-local function VLJPN_fake_script() -- TextButton_4.Expand 
+coroutine.wrap(FVZSYDR_fake_script)()
+local function FIPBSR_fake_script() -- TextButton_4.Expand 
 	local script = Instance.new('LocalScript', TextButton_4)
 
 	local DefaultColor = script.Parent.BackgroundColor3
@@ -410,8 +410,8 @@ local function VLJPN_fake_script() -- TextButton_4.Expand
 		end
 	end)
 end
-coroutine.wrap(VLJPN_fake_script)()
-local function QTSNS_fake_script() -- TextButton_5.Expand 
+coroutine.wrap(FIPBSR_fake_script)()
+local function SHQYTG_fake_script() -- TextButton_5.Expand 
 	local script = Instance.new('LocalScript', TextButton_5)
 
 	local DefaultColor = script.Parent.BackgroundColor3
@@ -457,8 +457,8 @@ local function QTSNS_fake_script() -- TextButton_5.Expand
 		end)
 	end)
 end
-coroutine.wrap(QTSNS_fake_script)()
-local function OZSWXDH_fake_script() -- Main.MainWhileStatement 
+coroutine.wrap(SHQYTG_fake_script)()
+local function JKNNY_fake_script() -- Main.MainWhileStatement 
 	local script = Instance.new('LocalScript', Main)
 
 	while true do
@@ -469,6 +469,8 @@ local function OZSWXDH_fake_script() -- Main.MainWhileStatement
 					if v.Bullets then
 						v.AutoFire = true
 						v.ReloadTime = 0
+						v.Range = math.huge
+						v.FireRate = 0.3
 					end
 				end
 			end
@@ -497,8 +499,8 @@ local function OZSWXDH_fake_script() -- Main.MainWhileStatement
 		end
 	end
 end
-coroutine.wrap(OZSWXDH_fake_script)()
-local function DFSWE_fake_script() -- TextButton_6.Expand 
+coroutine.wrap(JKNNY_fake_script)()
+local function RBQPPIA_fake_script() -- TextButton_6.Expand 
 	local script = Instance.new('LocalScript', TextButton_6)
 
 	local DefaultColor = script.Parent.BackgroundColor3
@@ -518,4 +520,4 @@ local function DFSWE_fake_script() -- TextButton_6.Expand
 		script.Parent.Visible = false
 	end)
 end
-coroutine.wrap(DFSWE_fake_script)()
+coroutine.wrap(RBQPPIA_fake_script)()
