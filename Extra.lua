@@ -4,6 +4,7 @@
 local Player = game.Players.LocalPlayer
 local saveLocation = false
 local modWeapons = false
+local KillAura = false
 
 -- Instances:
 
@@ -74,6 +75,7 @@ Main.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 Main.BackgroundTransparency = 0.800
 Main.Position = UDim2.new(0.754392087, 0, 0.615850031, 0)
 Main.Size = UDim2.new(0.239878654, 0, 0.37584573, 0)
+Main.Visible = false
 
 Options.Name = "Options"
 Options.Parent = Main
@@ -524,7 +526,7 @@ UICorner_18.Parent = TextButton_15
 
 -- Scripts:
 
-local function TPXFHNE_fake_script() -- TextButton.Expand 
+local function GFQBVDN_fake_script() -- TextButton.Expand 
 	local script = Instance.new('LocalScript', TextButton)
 
 	local DefaultColor = script.Parent.BackgroundColor3
@@ -549,8 +551,8 @@ local function TPXFHNE_fake_script() -- TextButton.Expand
 		end
 	end)
 end
-coroutine.wrap(TPXFHNE_fake_script)()
-local function GOHDYK_fake_script() -- TextButton_2.Expand 
+coroutine.wrap(GFQBVDN_fake_script)()
+local function JWVL_fake_script() -- TextButton_2.Expand 
 	local script = Instance.new('LocalScript', TextButton_2)
 
 	local DefaultColor = script.Parent.BackgroundColor3
@@ -652,8 +654,8 @@ local function GOHDYK_fake_script() -- TextButton_2.Expand
 		end)
 	end)
 end
-coroutine.wrap(GOHDYK_fake_script)()
-local function NJGKYJH_fake_script() -- TextButton_3.Expand 
+coroutine.wrap(JWVL_fake_script)()
+local function IYSPM_fake_script() -- TextButton_3.Expand 
 	local script = Instance.new('LocalScript', TextButton_3)
 
 	local DefaultColor = script.Parent.BackgroundColor3
@@ -678,8 +680,8 @@ local function NJGKYJH_fake_script() -- TextButton_3.Expand
 		modWeapons = true
 	end)
 end
-coroutine.wrap(NJGKYJH_fake_script)()
-local function BKDYNO_fake_script() -- TextButton_4.Expand 
+coroutine.wrap(IYSPM_fake_script)()
+local function ZVQZPLA_fake_script() -- TextButton_4.Expand 
 	local script = Instance.new('LocalScript', TextButton_4)
 
 	local DefaultColor = script.Parent.BackgroundColor3
@@ -725,8 +727,8 @@ local function BKDYNO_fake_script() -- TextButton_4.Expand
 		end)
 	end)
 end
-coroutine.wrap(BKDYNO_fake_script)()
-local function JKEIAM_fake_script() -- TextButton_5.Expand 
+coroutine.wrap(ZVQZPLA_fake_script)()
+local function UYRZU_fake_script() -- TextButton_5.Expand 
 	local script = Instance.new('LocalScript', TextButton_5)
 
 	local DefaultColor = script.Parent.BackgroundColor3
@@ -754,8 +756,8 @@ local function JKEIAM_fake_script() -- TextButton_5.Expand
 		end
 	end)
 end
-coroutine.wrap(JKEIAM_fake_script)()
-local function SJJL_fake_script() -- TextButton_6.Expand 
+coroutine.wrap(UYRZU_fake_script)()
+local function OUGWGR_fake_script() -- TextButton_6.Expand 
 	local script = Instance.new('LocalScript', TextButton_6)
 
 	local DefaultColor = script.Parent.BackgroundColor3
@@ -770,24 +772,12 @@ local function SJJL_fake_script() -- TextButton_6.Expand
 		TweenService:Create(script.Parent, TweenInfo.new(0.2), {BackgroundColor3 = DefaultColor}):Play()
 	end)
 	
-	local KillAura = false
-	
 	script.Parent.MouseButton1Click:Connect(function()	
 		KillAura = not KillAura
-		
-		while wait(0.1) do
-			for i, plr in pairs(game.Players:GetChildren()) do
-				if plr.Name ~= game.Players.LocalPlayer and KillAura == true then
-					for i = 1, 10 do
-						game.ReplicatedStorage.meleeEvent:FireServer(plr)
-					end
-				end
-			end
-		end
 	end)
 end
-coroutine.wrap(SJJL_fake_script)()
-local function LJJU_fake_script() -- TextButton_7.Expand 
+coroutine.wrap(OUGWGR_fake_script)()
+local function KWIXD_fake_script() -- TextButton_7.Expand 
 	local script = Instance.new('LocalScript', TextButton_7)
 
 	local DefaultColor = script.Parent.BackgroundColor3
@@ -806,8 +796,8 @@ local function LJJU_fake_script() -- TextButton_7.Expand
 		script.Parent.Parent.Parent.TP.Visible = true
 	end)
 end
-coroutine.wrap(LJJU_fake_script)()
-local function USZCD_fake_script() -- TextButton_8.Expand 
+coroutine.wrap(KWIXD_fake_script)()
+local function VZRDQ_fake_script() -- TextButton_8.Expand 
 	local script = Instance.new('LocalScript', TextButton_8)
 
 	local DefaultColor = script.Parent.BackgroundColor3
@@ -827,8 +817,8 @@ local function USZCD_fake_script() -- TextButton_8.Expand
 		script.Parent.Parent.Parent.Parent.TextButton.Visible = true
 	end)
 end
-coroutine.wrap(USZCD_fake_script)()
-local function IKUEQ_fake_script() -- Main.MainWhileStatement 
+coroutine.wrap(VZRDQ_fake_script)()
+local function RLVCG_fake_script() -- Main.MainWhileStatement 
 	local script = Instance.new('LocalScript', Main)
 
 	while true do
@@ -867,10 +857,20 @@ local function IKUEQ_fake_script() -- Main.MainWhileStatement
 				Player.Character:WaitForChild("HumanoidRootPart").CFrame = location
 			end
 		end
+		
+		if KillAura then
+			for i, plr in pairs(game.Players:GetChildren()) do
+				if plr.Name ~= game.Players.LocalPlayer.Name then
+					for i = 1, 10 do
+						game.ReplicatedStorage.meleeEvent:FireServer(plr)
+					end
+				end
+			end
+		end
 	end
 end
-coroutine.wrap(IKUEQ_fake_script)()
-local function NTWPO_fake_script() -- TextButton_9.Expand 
+coroutine.wrap(RLVCG_fake_script)()
+local function REQJL_fake_script() -- TextButton_9.Expand 
 	local script = Instance.new('LocalScript', TextButton_9)
 
 	local DefaultColor = script.Parent.BackgroundColor3
@@ -889,8 +889,8 @@ local function NTWPO_fake_script() -- TextButton_9.Expand
 		script.Parent.Parent.Visible = false
 	end)
 end
-coroutine.wrap(NTWPO_fake_script)()
-local function YMGENXK_fake_script() -- TextButton_10.Expand 
+coroutine.wrap(REQJL_fake_script)()
+local function UBPPW_fake_script() -- TextButton_10.Expand 
 	local script = Instance.new('LocalScript', TextButton_10)
 
 	local DefaultColor = script.Parent.BackgroundColor3
@@ -909,8 +909,8 @@ local function YMGENXK_fake_script() -- TextButton_10.Expand
 		Player.Character.HumanoidRootPart.CFrame = CFrame.new(288.452, 69.999, 2206.731)
 	end)
 end
-coroutine.wrap(YMGENXK_fake_script)()
-local function SMKJJZL_fake_script() -- TextButton_11.Expand 
+coroutine.wrap(UBPPW_fake_script)()
+local function SVZGHT_fake_script() -- TextButton_11.Expand 
 	local script = Instance.new('LocalScript', TextButton_11)
 
 	local DefaultColor = script.Parent.BackgroundColor3
@@ -929,8 +929,8 @@ local function SMKJJZL_fake_script() -- TextButton_11.Expand
 		Player.Character.HumanoidRootPart.CFrame = CFrame.new(-919.958, 95.327, 2138.189)
 	end)
 end
-coroutine.wrap(SMKJJZL_fake_script)()
-local function JBLLD_fake_script() -- TextButton_12.Expand 
+coroutine.wrap(SVZGHT_fake_script)()
+local function ITYFB_fake_script() -- TextButton_12.Expand 
 	local script = Instance.new('LocalScript', TextButton_12)
 
 	local DefaultColor = script.Parent.BackgroundColor3
@@ -949,8 +949,8 @@ local function JBLLD_fake_script() -- TextButton_12.Expand
 		Player.Character.HumanoidRootPart.CFrame = CFrame.new(-943.704, 91.632, 2056.925)
 	end)
 end
-coroutine.wrap(JBLLD_fake_script)()
-local function WRAMG_fake_script() -- TextButton_13.Expand 
+coroutine.wrap(ITYFB_fake_script)()
+local function GBIJEME_fake_script() -- TextButton_13.Expand 
 	local script = Instance.new('LocalScript', TextButton_13)
 
 	local DefaultColor = script.Parent.BackgroundColor3
@@ -969,8 +969,8 @@ local function WRAMG_fake_script() -- TextButton_13.Expand
 		Player.Character.HumanoidRootPart.CFrame = CFrame.new(834.972, 99.989, 2275.318)
 	end)
 end
-coroutine.wrap(WRAMG_fake_script)()
-local function BRQP_fake_script() -- TextButton_14.Expand 
+coroutine.wrap(GBIJEME_fake_script)()
+local function YDIPE_fake_script() -- TextButton_14.Expand 
 	local script = Instance.new('LocalScript', TextButton_14)
 
 	local DefaultColor = script.Parent.BackgroundColor3
@@ -989,8 +989,8 @@ local function BRQP_fake_script() -- TextButton_14.Expand
 		Player.Character.HumanoidRootPart.CFrame = CFrame.new(918, 97.73, 2447)
 	end)
 end
-coroutine.wrap(BRQP_fake_script)()
-local function LJCO_fake_script() -- TextButton_15.Expand 
+coroutine.wrap(YDIPE_fake_script)()
+local function SYEI_fake_script() -- TextButton_15.Expand 
 	local script = Instance.new('LocalScript', TextButton_15)
 
 	local DefaultColor = script.Parent.BackgroundColor3
@@ -1010,5 +1010,4 @@ local function LJCO_fake_script() -- TextButton_15.Expand
 		script.Parent.Visible = false
 	end)
 end
-coroutine.wrap(LJCO_fake_script)()
-
+coroutine.wrap(SYEI_fake_script)()
