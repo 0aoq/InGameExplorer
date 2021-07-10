@@ -58,12 +58,6 @@ list.Padding = UDim.new(0.0005, 0)
 local AssetsFolder = Instance.new("Folder", workspace)
 AssetsFolder.Name = "ExplorerGuiAsstes"
 
-local PrisonLife = Instance.new("Folder", AssetsFolder)
-PrisonLife.Name = "ExplorerGuiAsset__GameType:PrisonLife"
-local aura = false
-local arrest_aura = false
-local aura_whitelist = {"0a_oq", "atomixrb"}
-
 -- // Functions
 
 local function ClearList()
@@ -145,12 +139,6 @@ local function IndexProperties(x, opened)
 					x.Health = 1000
 					x.MaxHealth = 1000
 				end)
-				
-				newLabel("Prison Life")
-				
-				newButton("Add To Aura Whitelist", frame, Color3.fromRGB(24, 24, 24), function(btn)
-					table.insert(aura_whitelist, x.Parent.Name)
-				end)
 			elseif x:IsA("ScreenGui") then
 				newButton("Enabled: " .. tostring(x.Enabled), frame, Color3.fromRGB(24, 24, 24), function(btn)
 					x.Enabled = not x.Enabled
@@ -166,14 +154,6 @@ local function IndexProperties(x, opened)
 					x.Disabled = not x.Disabled
 
 					btn.Text = "Disabled: " .. tostring(x.Disabled)
-				end)
-			elseif x.Name == "ExplorerGuiAsset__GameType:PrisonLife" then
-				newButton("Aura", frame, Color3.fromRGB(24, 24, 24), function(btn)
-					aura = not aura
-				end)
-				
-				newButton("ArrestAura", frame, Color3.fromRGB(24, 24, 24), function(btn)
-					arrest_aura = not arrest_aura
 				end)
 			end
 		end)
@@ -364,30 +344,6 @@ while true do
 				newButton(x.Name, frame, Color3.fromRGB(34, 34, 34), function(btn2)
 					IndexChild(game:FindFirstChild(x.Name))
 				end)
-			end
-		end
-
-		if aura then
-			for i, plr in pairs(game.Players:GetChildren()) do
-				for key, value in pairs(aura_whitelist) do
-					if plr.Name ~= game.Players.LocalPlayer.Name and plr.Name ~= value then
-						for i = 1, 10 do
-							game.ReplicatedStorage.meleeEvent:FireServer(plr)
-						end
-					end
-				end
-			end
-		end
-		
-		if arrest_aura then
-			for i, plr in pairs(game.Players:GetChildren()) do
-				for key, value in pairs(aura_whitelist) do
-					if plr.Name ~= game.Players.LocalPlayer.Name and plr.Name ~= value then
-						for i = 1, 10 do
-							game.ReplicatedStorage.Arrest:InvokeServer(plr.Character.HumanoidRootPart)
-						end
-					end
-				end
 			end
 		end
 	end)
